@@ -1,4 +1,4 @@
-name: Gathering changed files per commit per historification purposes
+name: Scan for vulnerabilities
 on:
   push:
     branches:
@@ -16,17 +16,15 @@ jobs:
         run: |
           git diff --name-only ${{ github.event.before }} ${{ github.sha }}
 
-      - name: Checkout
-        uses: actions/checkout@v3
+    #   - name: Build
+    #     uses: docker/build-push-action@v4
+    #     with:
+    #         context: .
+    #         push: true
+    #         tags: user/app:latest
 
-      - name: Build
-        uses: docker/build-push-action@v4
+      - name: Container Scan
+        uses: crazy-max/ghaction-container-scan@v3.0.0
         with:
-            context: .
-            push: true
-            tags: user/app:latest
-
-      - name: Scan for vulnerabilities
-        uses: crazy-max/ghaction-container-scan@v3
-        with:
-            image: user/app:latest
+          image: ubuntu-latest
+        
