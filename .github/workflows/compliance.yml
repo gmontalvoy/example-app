@@ -8,15 +8,15 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-        id: changes
         with:
           fetch-depth: 0
 
       - name: Changed Files
         uses: tj-actions/changed-files@v40.2.1
+        id: changes
 
       - name: List all changed files
         run: |
-          for file in ${{ steps.changes.outputs.all_changes }}; do
+          for file in ${{ steps.changes.outputs.all_changed_files }}; do
             echo "$file was modified"
           done
