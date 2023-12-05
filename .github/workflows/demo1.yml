@@ -1,0 +1,15 @@
+name: Github Actions
+run-name; ${{ github.actor }} initiate the actions on push
+on: [push]
+jobs:
+    Explore-Github-Actions:
+        runs-on: ubuntu-latest
+        steps: 
+            - run: echo "${{ github.event_name }} event detected, initiate actions"
+            - name: Check out repository code
+              uses: actions/checkout@v4
+            - run: echo "Repository cloned to the runner"
+            - name: List files in the repository
+              run: |
+                ls ${{ github.workspace }}
+            - run: echo "Job status ${{ job.status }}"
