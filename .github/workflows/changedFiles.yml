@@ -26,5 +26,5 @@ jobs:
       - name: Container Scan
         uses: crazy-max/ghaction-container-scan@v3.0.0
         with:
-          image: ubuntu-latest
+          image: ubuntu:latest
         
