@@ -6,9 +6,6 @@ jobs:
         runs-on: ubuntu-latest
         steps: 
             - run: echo "${{ github.event_name }} event detected, initiate actions"
-            - name: Check out repository code
-              uses: actions/checkout@v4
-            - run: echo "Repository cloned to the runner"
             - name: List files in the repository
               run: |
                 ls ${{ github.workspace }}
