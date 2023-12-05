@@ -7,7 +7,7 @@ import (
 )
 
 func handler(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprintf(w, "Hola, este es un servidor web básico en Go!")
+	fmt.Fprintf(w, "ok")
 }
 
 func main() {
