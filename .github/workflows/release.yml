@@ -28,7 +28,7 @@ jobs:
 
       - name: building the image
         run: |
-          docker build -v . -t gmontalvoy/goapp:${{ github.sha }}
+          docker build . -t gmontalvoy/goapp:${{ github.sha }}
 
       - name: Run Image Scan
         uses: aquasecurity/trivy-action@0.15.0
