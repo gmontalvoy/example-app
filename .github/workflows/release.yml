@@ -17,7 +17,7 @@ jobs:
       - name: Test the app
         run: go test -v ./...
 
-  build-and-push:
+  build:
     name: Build and push to Docker Image
     runs-on: ubuntu-latest
     steps:
@@ -30,6 +30,16 @@ jobs:
         run: |
           docker build . -t gmontalvoy/goapp:${{ github.sha }}
 
+  compliance:
+    name: Image Scan
+    needs: [ testCode, build ]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
       - name: Run Image Scan
         uses: aquasecurity/trivy-action@0.15.0
         with:
@@ -37,7 +47,7 @@ jobs:
 
   push-to-registry:
     name: push to registry
-    needs: build-and-push
+    needs: [build, compliance]
     runs-on: ubuntu-latest
     steps:
       - name: Login to Docker Hub
