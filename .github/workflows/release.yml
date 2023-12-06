@@ -88,6 +88,10 @@ jobs:
         run: |
           aws eks update-kubeconfig --name amazing-monster-1701835795
 
+      - name: Create deployment
+        run: |
+          kubectl apply -f k8s/
+
       - name: deploy to EKS
         run: |
           kubectl set image deployment/goapp goapp=docker.io/gmontalvoy/goapp:d980c48a08ef59a66b4bc34f84f1e5630c683149
