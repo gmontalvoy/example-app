@@ -44,7 +44,7 @@ jobs:
           tags: gmontalvoy/goapp:${{ github.sha }}
 
   compliance:
-    needs: build-and-push
+    needs: [testCode, build-and-push ]
     runs-on: ubuntu-latest
     steps:
       - name: Security checks
@@ -68,7 +68,7 @@ jobs:
           image-ref: 'gmontalvoy/goapp:${{ github.sha }}'
           
   deploy:
-    needs: [build-and-push, compliance, testCode]
+    needs: [testCode, build-and-push, compliance]
     runs-on: ubuntu-latest
     steps:
       - name: Run the app
