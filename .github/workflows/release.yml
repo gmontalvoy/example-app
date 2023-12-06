@@ -1,42 +1,48 @@
-name: My Workflow 1
+name: Initial Phase
 on:
   push:
     branches:
       - main
+
 jobs:
-  build:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Set up Go
-        uses: actions/setup-go@v4
+  myWorkflow:
+    uses: ./.github/workflows/reusable.yml
 
-      - name: Check out code
-        uses: actions/checkout@v3
 
-      - name: Build
-        run: go build -v ./...
+    
+  # build:
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - name: Set up Go
+  #       uses: actions/setup-go@v4
 
-      - name: Test
-        run: go test -v ./...
+  #     - name: Check out code
+  #       uses: actions/checkout@v3
 
-  compliance:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Security checks
-        uses: actions/checkout@v3
-        with:
-          fetch-depth: 0
+  #     - name: Build
+  #       run: go build -v ./...
+
+  #     - name: Test
+  #       run: go test -v ./...
+
+  # compliance:
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - name: Security checks
+  #       uses: actions/checkout@v3
+  #       with:
+  #         fetch-depth: 0
         
-      - name: Changed Files
-        uses: tj-actions/changed-files@v40.2.1
-        id: changes
+  #     - name: Changed Files
+  #       uses: tj-actions/changed-files@v40.2.1
+  #       id: changes
 
-      - name: List all changed files
-        run: |
-          for file in ${{ steps.changes.outputs.all_changed_files }}; do
-            echo "$file was modified"
-          done
+  #     - name: List all changed files
+  #       run: |
+  #         for file in ${{ steps.changes.outputs.all_changed_files }}; do
+  #           echo "$file was modified"
+  #         done
         
-      - name: Image Scanning
-        uses: aquasecurity/trivy-action@0.15.0
+  #     - name: Image Scanning
+  #       uses: aquasecurity/trivy-action@0.15.0
           
