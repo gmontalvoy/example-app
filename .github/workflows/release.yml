@@ -41,6 +41,7 @@ jobs:
 
   push-to-registry:
     name: push to registry
+    needs: build-and-push
     runs-on: ubuntu-latest
     steps:
       - name: Login to Docker Hub
