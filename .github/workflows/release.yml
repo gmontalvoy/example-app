@@ -20,15 +20,21 @@ jobs:
   build:
     name: Build and push to Docker Image
     runs-on: ubuntu-latest
+    services:
+      registry:
+        image: registry:2
+        ports:
+          - 5000:5000
     steps:
       - name: Check out code
         uses: actions/checkout@v3
-        with:
-          fetch-depth: 0
 
-      - name: building the image
-        run: |
-          docker build . -t gmontalvoy/goapp:${{ github.sha }}
+      - name: Build and push to local registry
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          push: true
+          tags: localhost:5000/gmontalvoy/goapp:${{ github.sha }}
 
   compliance:
     name: Image Scan
@@ -37,8 +43,6 @@ jobs:
     steps:
       - name: Check out code
         uses: actions/checkout@v3
-        with:
-          fetch-depth: 0
 
       - name: Run Image Scan
         uses: aquasecurity/trivy-action@0.15.0
