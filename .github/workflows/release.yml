@@ -47,7 +47,7 @@ jobs:
       - name: Run Image Scan
         uses: aquasecurity/trivy-action@0.15.0
         with:
-          image-ref: 'gmontalvoy/goapp:${{ github.sha }}'
+          image-ref: 'localhost:5000/gmontalvoy/goapp:${{ github.sha }}'
 
   push-to-registry:
     name: push to registry
