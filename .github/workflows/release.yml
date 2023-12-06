@@ -67,3 +67,28 @@ jobs:
         with:
           image-ref: 'docker.io/gmontalvoy/goapp:${{ github.sha }}'
           
+  deploy:
+    needs: [build-and-push, compliance, testCode]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Add credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-2
+
+      - name: Install kubectl
+        run: |
+          curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
+          chmod +x kubectl
+          sudo mv kubectl /usr/local/bin/
+
+      - name: Update kubeconfig
+        run: |
+          aws eks update-kubeconfig --name amazing-monster-1701835795
+
+      - name: deploy to EKS
+        run: |
+          kubectl set image deployment/goapp goapp=docker.io/gmontalvoy/goapp:d980c48a08ef59a66b4bc34f84f1e5630c683149
+          kubectl rollout status deployment/goapp
