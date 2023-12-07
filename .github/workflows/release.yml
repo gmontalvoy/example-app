@@ -23,7 +23,7 @@ jobs:
     steps:
         - name: Check out code
           uses: actions/checkout@v3
-          
+
         - name: Build Image
           id: build-image
           uses: redhat-actions/buildah-build@v2
@@ -57,8 +57,8 @@ jobs:
           image-ref: 'docker.io/gmontalvoy/goapp:${{ github.run_number }}-dev'
 
   push-to-prod:
-    name: push to registry
-    needs: [ test-code, compliance]
+    name: Promote to prod
+    needs: [ compliance]
     runs-on: ubuntu-latest
     steps:
       - name: Login to Docker Hub
