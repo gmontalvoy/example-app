@@ -22,7 +22,7 @@ jobs:
         uses: redhat-actions/buildah-build@v2
         with:
           image: goapp
-          tags: {{ github.run_number }}-dev
+          tags: ${{ github.run_number }}-dev
           containerfiles: |
             ./Dockerfile
 
