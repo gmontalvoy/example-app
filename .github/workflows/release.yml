@@ -35,7 +35,7 @@ jobs:
       - name: Push To Registry
         uses: redhat-actions/push-to-registry@v2
         with:
-          image: ${{ steps.build-image.output.image }}
+          image: ${{ test-and-build.steps.build-image.output.image }}
           tags: ${{ steps.build-image.output.tags }}
           registry: docker.io/gmontalvoy
           username: ${{ secrets.DOCKER_HUB_USERNAME }}
