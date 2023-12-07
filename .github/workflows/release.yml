@@ -55,7 +55,7 @@ jobs:
       - name: Run Image Scan
         uses: aquasecurity/trivy-action@0.15.0
         with:
-          image-ref: '${{ env.REGISTRY }}/${{ env.ORG }}/${{ env.APP_NAME }}:${{ github.sha }}-dev'
+          image-ref: '${{ env.REGISTRY }}/${{ env.ORG }}/${{ env.APP_NAME }}:dev-${{ github.sha }}'
 
   push-to-prod:
     name: Promote to prod
