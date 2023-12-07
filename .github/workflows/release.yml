@@ -34,11 +34,12 @@ jobs:
           tags: ${{ github.sha }}-dev
           containerfiles: |
             ./Dockerfile
+
       - name: Push To Registry
         uses: redhat-actions/push-to-registry@v2
         with:
           image: ${{ steps.build-image.outputs.image }}
-          tags: '-dev'
+          tags: '${{ github.sha }}-dev'
           registry: ${{ env.REGISTRY }}/${{ env.ORG }}
           username: ${{ secrets.DOCKER_HUB_USERNAME }}
           password: ${{ secrets.DOCKER_HUB_PASSWORD }}
