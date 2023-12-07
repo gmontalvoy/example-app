@@ -61,6 +61,13 @@ jobs:
     needs: [compliance]
     runs-on: ubuntu-latest
     steps:
+
+      - name: Pull Dev Image
+        run: docker pull ${{ env.REGISTRY }}/${{ env.ORG }}/${{ env.APP_NAME }}:${{ github.sha }}-dev
+
+      - name: Tag Image as Prod
+        run: docker tag ${{ env.REGISTRY }}/${{ env.ORG }}/${{ env.APP_NAME }}:-dev ${{ env.REGISTRY }}/${{ env.ORG }}/${{ env.APP_NAME }}:${{ github.sha }}-prod
+
       - name: Promote to prod
         uses: redhat-actions/push-to-registry@v2
         with:
