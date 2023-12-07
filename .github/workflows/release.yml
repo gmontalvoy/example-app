@@ -15,10 +15,8 @@ jobs:
     steps:
       - name: Set up Go
         uses: actions/setup-go@v4
-
       - name: Check out code
         uses: actions/checkout@v3
-
       - name: Test the app
         run: go test -v ./...
 
@@ -26,51 +24,47 @@ jobs:
     name: Building the app and push to dev
     runs-on: ubuntu-latest
     steps:
-        - name: Check out code
-          uses: actions/checkout@v3
-
-        - name: Build Image
-          id: build-image
-          uses: redhat-actions/buildah-build@v2
-          with:
-            image: goapp
-            tags: dev-${{ github.sha }}
-            containerfiles: |
-              ./Dockerfile
-
-        - name: Push To Registry
-          uses: redhat-actions/push-to-registry@v2
-          with:
-            image: ${{ steps.build-image.outputs.image }}
-            tags: ${{ steps.build-image.outputs.tags }}
-            registry: ${{ env.REGISTRY }}/${{ env.ORG }}
-            username: ${{ secrets.DOCKER_HUB_USERNAME }}
-            password: ${{ secrets.DOCKER_HUB_PASSWORD }}
-      
+      - name: Check out code
+        uses: actions/checkout@v3
+      - name: Build Image
+        id: build-image
+        uses: redhat-actions/buildah-build@v2
+        with:
+          image: ${{ env.APP_NAME }}
+          tags: '-dev'
+          containerfiles: |
+            ./Dockerfile
+      - name: Push To Registry
+        uses: redhat-actions/push-to-registry@v2
+        with:
+          image: ${{ steps.build-image.outputs.image }}
+          tags: '-dev'
+          registry: ${{ env.REGISTRY }}/${{ env.ORG }}
+          username: ${{ secrets.DOCKER_HUB_USERNAME }}
+          password: ${{ secrets.DOCKER_HUB_PASSWORD }}
 
   compliance:
     name: Image Scan
-    needs: [ test-code, build-and-push ]
+    needs: [test-code, build-and-push]
     runs-on: ubuntu-latest
     steps:
       - name: Check out code
         uses: actions/checkout@v3
-
       - name: Run Image Scan
         uses: aquasecurity/trivy-action@0.15.0
         with:
-          image-ref: 'docker.io/gmontalvoy/goapp:dev-${{ github.sha }}'
+          image-ref: '${{ env.REGISTRY }}/${{ env.ORG }}/${{ env.APP_NAME }}:-dev'
 
   push-to-prod:
     name: Promote to prod
-    needs: [ compliance]
+    needs: [compliance]
     runs-on: ubuntu-latest
     steps:
-      - name: promote to prod
+      - name: Promote to prod
         uses: redhat-actions/push-to-registry@v2
         with:
           image: ${{ env.APP_NAME }}
-          tags: prod
+          tags: '-prod'
           registry: ${{ env.REGISTRY }}/${{ env.ORG }}
           username: ${{ secrets.DOCKER_HUB_USERNAME }}
           password: ${{ secrets.DOCKER_HUB_PASSWORD }}
