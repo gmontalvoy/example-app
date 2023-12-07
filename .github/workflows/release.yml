@@ -26,6 +26,7 @@ jobs:
     steps:
       - name: Check out code
         uses: actions/checkout@v3
+
       - name: Build Image
         id: build-image
         uses: redhat-actions/buildah-build@v2
@@ -39,7 +40,7 @@ jobs:
         uses: redhat-actions/push-to-registry@v2
         with:
           image: ${{ steps.build-image.outputs.image }}
-          tags: '${{ github.sha }}-dev'
+          tags: ${{ github.sha }}-dev
           registry: ${{ env.REGISTRY }}/${{ env.ORG }}
           username: ${{ secrets.DOCKER_HUB_USERNAME }}
           password: ${{ secrets.DOCKER_HUB_PASSWORD }}
@@ -80,8 +81,8 @@ jobs:
       - name: Push to Prod
         uses: redhat-actions/push-to-registry@v2
         with:
-          image: ${{ env.APP_NAME }}
-          tags: '${{ github.sha }}-prod'
+          image: ${{ env.REGISTRY }}/${{ env.ORG }}/${{ env.APP_NAME }}
+          tags: ${{ github.sha }}-prod
           registry: ${{ env.REGISTRY }}/${{ env.ORG }}
           username: ${{ secrets.DOCKER_HUB_USERNAME }}
           password: ${{ secrets.DOCKER_HUB_PASSWORD }}
