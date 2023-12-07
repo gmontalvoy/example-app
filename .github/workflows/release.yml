@@ -57,7 +57,7 @@ jobs:
       - name: Run Image Scan
         uses: aquasecurity/trivy-action@0.15.0
         with:
-          image-ref: 'docker.io/gmontalvoy/goapp:${{ github.run_number }}-dev'
+          image-ref: 'docker.io/gmontalvoy/goapp:dev-${{ github.sha }}'
 
   push-to-prod:
     name: Promote to prod
