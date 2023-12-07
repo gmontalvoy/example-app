@@ -70,13 +70,10 @@ jobs:
           registry: ${{ env.REGISTRY }}
           username: ${{ secrets.DOCKER_HUB_USERNAME }}
           password: ${{ secrets.DOCKER_HUB_PASSWORD }}
-          
       - name: Pull Dev Image
-        run: docker pull ${{ env.REGISTRY }}/${{ env.ORG }}/${{ env.APP_NAME }}:${{ github.sha }}-dev
-
+        run: docker pull ${{ env.REGISTRY }}/${{ env.ORG }}/${{ env.APP_NAME }}:dev-${{ github.sha }}
       - name: Tag Image as Prod
-        run: docker tag ${{ env.REGISTRY }}/${{ env.ORG }}/${{ env.APP_NAME }}:${{ github.sha }}-dev ${{ env.REGISTRY }}/${{ env.ORG }}/${{ env.APP_NAME }}:prod-${{ github.sha }}
-
+        run: docker tag ${{ env.REGISTRY }}/${{ env.ORG }}/${{ env.APP_NAME }}:dev-${{ github.sha }} ${{ env.REGISTRY }}/${{ env.ORG }}/${{ env.APP_NAME }}:prod-${{ github.sha }}
       - name: Push to Prod
         uses: redhat-actions/push-to-registry@v2
         with:
@@ -84,6 +81,7 @@ jobs:
           registry: ${{ env.REGISTRY }}
           username: ${{ secrets.DOCKER_HUB_USERNAME }}
           password: ${{ secrets.DOCKER_HUB_PASSWORD }}
+          
 
 
 
