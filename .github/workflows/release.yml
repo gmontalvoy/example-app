@@ -45,7 +45,7 @@ jobs:
 
   compliance:
     name: Image Scan
-    needs: [ build-and-push ]
+    needs: [ test-code, build-and-push ]
     runs-on: ubuntu-latest
     steps:
       - name: Check out code
