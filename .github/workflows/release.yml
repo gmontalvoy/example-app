@@ -32,7 +32,7 @@ jobs:
           uses: redhat-actions/buildah-build@v2
           with:
             image: goapp
-            tags: ${{ github.run_number }}-dev
+            tags: dev-${{ github.sha }}
             containerfiles: |
               ./Dockerfile
 
@@ -65,10 +65,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: promote to prod
-      uses: redhat-actions/push-to-registry@v2
-      with:
-        image: ${{ APP_NAME }}
-        tags: ${{ APP_NAME }}-prod
-        registry: docker.io/gmontalvoy
-        username: ${{ secrets.DOCKER_HUB_USERNAME }}
-        password: ${{ secrets.DOCKER_HUB_PASSWORD }}
+        uses: redhat-actions/push-to-registry@v2
+        with:
+          image: $APP_NAME
+          tags: prod-${{ github.sha }}
+          registry: docker.io/gmontalvoy
+          username: ${{ secrets.DOCKER_HUB_USERNAME }}
+          password: ${{ secrets.DOCKER_HUB_PASSWORD }}
