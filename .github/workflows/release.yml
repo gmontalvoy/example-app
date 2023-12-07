@@ -4,6 +4,9 @@ on:
     branches:
       - main
 
+env:
+  APP_NAME: goapp
+
 jobs:
   test-code:
     runs-on: ubuntu-latest
@@ -61,8 +64,11 @@ jobs:
     needs: [ compliance]
     runs-on: ubuntu-latest
     steps:
-      - name: Login to Docker Hub
-        uses: docker/login-action@v3
-        with:
-          username: ${{ secrets.DOCKER_HUB_USERNAME }}
-          password: ${{ secrets.DOCKER_HUB_PASSWORD }}
+      - name: promote to prod
+      uses: redhat-actions/push-to-registry@v2
+      with:
+        image: ${{ APP_NAME }}
+        tags: ${{ APP_NAME }}-prod
+        registry: docker.io/gmontalvoy
+        username: ${{ secrets.DOCKER_HUB_USERNAME }}
+        password: ${{ secrets.DOCKER_HUB_PASSWORD }}
