@@ -75,15 +75,16 @@ jobs:
         run: docker pull ${{ env.REGISTRY }}/${{ env.ORG }}/${{ env.APP_NAME }}:${{ github.sha }}-dev
 
       - name: Tag Image as Prod
-        run: docker tag ${{ env.REGISTRY }}/${{ env.ORG }}/${{ env.APP_NAME }}:${{ github.sha }}-dev ${{ env.REGISTRY }}/${{ env.ORG }}/${{ env.APP_NAME }}:${{ github.sha }}-prod
+        run: docker tag ${{ env.REGISTRY }}/${{ env.ORG }}/${{ env.APP_NAME }}:${{ github.sha }}-dev ${{ env.REGISTRY }}/${{ env.ORG }}/${{ env.APP_NAME }}:prod-${{ github.sha }}
 
       - name: Push to Prod
         uses: redhat-actions/push-to-registry@v2
         with:
-          image: ${{ env.ORG }}/${{ env.APP_NAME }}:${{ github.sha }}-prod
+          image: ${{ env.ORG }}/${{ env.APP_NAME }}:prod-${{ github.sha }}
           registry: ${{ env.REGISTRY }}
           username: ${{ secrets.DOCKER_HUB_USERNAME }}
           password: ${{ secrets.DOCKER_HUB_PASSWORD }}
+
 
 
 
